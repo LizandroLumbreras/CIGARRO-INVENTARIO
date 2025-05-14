@@ -131,7 +131,13 @@
         <button class="print" onclick="window.print()">🖨 Imprimir</button>
     </div>
 
-    <table>
+    <table style="table-layout: fixed;">
+    <colgroup>
+        <col style="width: 20%;">  <!-- Código de Barras -->
+        <col style="width: 50%;">  <!-- Descripción -->
+        <col style="width: 15%;">  <!-- Pieza -->
+        <col style="width: 15%;">  <!-- Paquete -->
+    </colgroup>
         <thead>
             <tr>
                 <th>CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
