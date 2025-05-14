@@ -85,7 +85,15 @@
     <h1>INVENTARIO CIGARRO</h1>
 
     <div class="info">
-        <label>Sucursal: <input type="text" id="sucursal"></label>
+        <label>Sucursal:
+    <select id="sucursal">
+        <option value="">--Selecciona--</option>
+        <option value="Central">Central</option>
+        <option value="Provileon">Provileon</option>
+        <option value="Osito">Osito</option>
+        <option value="Rio Verde">Rio Verde</option>
+    </select>
+</label>
         <label>Encargado: <input type="text" id="encargado"></label>
         <label>Fecha: <input type="date" id="fecha"></label>
         <label>Venta: <input type="text" id="venta"></label>
@@ -94,7 +102,7 @@
     <div class="buttons">
         <button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
         <button class="print" onclick="window.print()">🖨 Imprimir</button>
-        <button class="print" onclick="verUltimosInventarios()">📋 Ver últimos 5 inventarios</button>
+        <button class="print" onclick="verUltimosInventarios()">📋 Ver inventarios guardados</button>
     </div>
 
     <table>
@@ -111,7 +119,19 @@
     </table>
 
     <h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
-    <div id="listaInventarios" style="margin-top:20px;"></div>
+    
+<div style="text-align:center; margin:20px 0;">
+    <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+    <select id="filtroSucursal" onchange="verInventariosFiltrados()">
+        <option value="">-- Todas --</option>
+        <option value="Central">Central</option>
+        <option value="Provileon">Provileon</option>
+        <option value="Osito">Osito</option>
+        <option value="Rio Verde">Rio Verde</option>
+    </select>
+</div>
+
+<div id="listaInventarios" style="margin-top:20px;"></div>
 
     <script>
     const firebaseConfig = {
@@ -159,11 +179,52 @@
         });
     }
 
-    function verUltimosInventarios() {
+    
+function verInventariosFiltrados() {
+    const contenedor = document.getElementById("listaInventarios");
+    const filtro = document.getElementById("filtroSucursal").value;
+    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+
+    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+    if (filtro) {
+        consulta = consulta.where("sucursal", "==", filtro);
+    }
+
+    consulta.get()
+    .then(snapshot => {
+        if (snapshot.empty) {
+            contenedor.innerHTML = "<p>No hay inventarios guardados para esta sucursal.</p>";
+            return;
+        }
+
+        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Venta</th><th>Productos</th></tr></thead><tbody>';
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
+            html += `<tr>
+                <td>${data.fecha || ''}</td>
+                <td>${data.sucursal || ''}</td>
+                <td>${data.encargado || ''}</td>
+                <td>${data.venta || ''}</td>
+                <td>${productos}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        contenedor.innerHTML = html;
+    })
+    .catch(error => {
+        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+        console.error("Error al cargar inventarios:", error);
+    });
+}
+ {
         const contenedor = document.getElementById("listaInventarios");
         contenedor.innerHTML = "<em>Cargando inventarios...</em>";
 
-        db.collection("inventarios").orderBy("timestamp", "desc").limit(5).get()
+        db.collection("inventarios").orderBy("timestamp", "desc").get()
         .then(snapshot => {
             if (snapshot.empty) {
                 contenedor.innerHTML = "<p>No hay inventarios guardados aún.</p>";
