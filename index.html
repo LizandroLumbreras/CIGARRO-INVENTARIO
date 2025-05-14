@@ -1,12 +1,13 @@
 
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Inventario Cigarro con Firebase</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<title>Inventario Cigarro con Firebase</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<style>
 @media print {
     .no-print {
         display: none !important;
@@ -96,207 +97,179 @@
     </style>
 </head>
 <body>
-    <div class="logo">
-        <img src="logo.png" alt="Logo" height="120">
-    </div>
-
-    <h1>INVENTARIO CIGARRO</h1>
-
-    <div class="info">
-        <label>Sucursal:
+<div class="logo">
+<img alt="Logo" height="120" src="logo.png"/>
+</div>
+<h1>INVENTARIO CIGARRO</h1>
+<div class="info">
+<label>Sucursal:
             <select id="sucursal">
-                <option value="">--Selecciona--</option>
-                <option value="Central">Central</option>
-                <option value="Provileon">Provileon</option>
-                <option value="Osito">Osito</option>
-                <option value="Rio Verde">Rio Verde</option>
-            </select>
-        </label>
-        <label>Encargado:
-    <select id="encargado">
-        <option value="">--Selecciona--</option>
-        <option value="Genaro">Genaro</option>
-        <option value="Sra Juany">Sra Juany</option>
-        <option value="Angel">Angel</option>
-        <option value="Adrian">Adrian</option>
-        <option value="Sergio">Sergio</option>
-    </select>
+<option value="">--Selecciona--</option>
+<option value="Central">Central</option>
+<option value="Provileon">Provileon</option>
+<option value="Osito">Osito</option>
+<option value="Rio Verde">Rio Verde</option>
+</select>
 </label>
-        <label>Fecha: <input type="date" id="fecha"></label>
-        <label>Venta: <input type="text" id="venta"></label>
-    </div>
-
-    <div class="buttons">
-        <button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
-        <button class="print" onclick="window.print()">🖨 Imprimir</button>
-    </div>
-
-    <table>
-    
-        <col style="width: 15%;">  <!-- Código de Barras -->
-        <col style="width: 60%;">  <!-- Descripción -->
-        <col style="width: 12.5%;">  <!-- Pieza -->
-        <col style="width: 12.5%;">  <!-- Paquete -->
-    
-        <thead>
-            <tr>
-                <th>CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
-                <th>PIEZA</th>
-                <th>PAQUETE/KG</th>
-            </tr>
-        </thead>
-        <tbody id="tablaInventario">
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO BLANCO 100" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO BLANCO DURO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO BLANCO SUAVE" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO ROJO 100" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO ROJO DURO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="MARLBORO ROJO SUAVE" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="PALLMALL BLANCO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="PALLMALL TOKIO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="PALLMALL ALASKA" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="PALLMALL PEPINO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="LINK BLANCO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="BENSON DORADO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="BENSON MENTHOL" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="CELOFAN ROJO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="CELOFAN AMARILLO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="CELOFAN BLANCO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="NUEZ ENTERA" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="NUEZ PEDAZO" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    
-    <tr>
-        <td><input type="text" placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text" value="CHILE JAPONES" style="width:100%; border:none; text-align: left;"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-    </tr>
-    </tbody>
-    </table>
-
-    <h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
-
-    <div style="text-align:center; margin:20px 0;">
-        <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
-        <select id="filtroSucursal" onchange="filtrarInventarios()">
-            <option value="">-- Todas --</option>
-            <option value="Central">Central</option>
-            <option value="Provileon">Provileon</option>
-            <option value="Osito">Osito</option>
-            <option value="Rio Verde">Rio Verde</option>
-        </select>
-    </div>
-
-    <div id="listaInventarios" class="no-print" style="margin-top:20px;"></div>
-
-    <script>
+<label>Encargado:
+    <select id="encargado">
+<option value="">--Selecciona--</option>
+<option value="Genaro">Genaro</option>
+<option value="Sra Juany">Sra Juany</option>
+<option value="Angel">Angel</option>
+<option value="Adrian">Adrian</option>
+<option value="Sergio">Sergio</option>
+</select>
+</label>
+<label>Fecha: <input id="fecha" type="date"/></label>
+<label>Venta: <input id="venta" type="text"/></label>
+</div>
+<div class="buttons">
+<button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
+<button class="print" onclick="window.print()">🖨 Imprimir</button>
+</div>
+<table>
+<col style="width: 15%;"/> <!-- Código de Barras -->
+<col style="width: 60%;"/> <!-- Descripción -->
+<col style="width: 12.5%;"/> <!-- Pieza -->
+<col style="width: 12.5%;"/> <!-- Paquete -->
+<thead>
+<tr>
+<th>CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
+<th>PIEZA</th>
+<th>PAQUETE/KG</th>
+</tr>
+</thead>
+<tbody id="tablaInventario">
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO BLANCO 100</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO BLANCO DURO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO BLANCO SUAVE</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO ROJO 100</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO ROJO DURO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>MARLBORO ROJO SUAVE</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>PALLMALL BLANCO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>PALLMALL TOKIO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>PALLMALL ALASKA</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>PALLMALL PEPINO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>LINK BLANCO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>BENSON DORADO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>BENSON MENTHOL</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>CELOFAN ROJO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>CELOFAN AMARILLO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>CELOFAN BLANCO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>NUEZ ENTERA</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>NUEZ PEDAZO</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td>CHILE JAPONES</td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+</tbody>
+</table>
+<h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
+<div style="text-align:center; margin:20px 0;">
+<label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+<select id="filtroSucursal" onchange="filtrarInventarios()">
+<option value="">-- Todas --</option>
+<option value="Central">Central</option>
+<option value="Provileon">Provileon</option>
+<option value="Osito">Osito</option>
+<option value="Rio Verde">Rio Verde</option>
+</select>
+</div>
+<div class="no-print" id="listaInventarios" style="margin-top:20px;"></div>
+<script>
     const firebaseConfig = {
       apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
       authDomain: "inventario-cigarro.firebaseapp.com",
@@ -384,16 +357,14 @@
     // Cargar al inicio sin filtro
     window.onload = filtrarInventarios;
     </script>
-
-    <div class="firma-impresion">
-        <br><br><br>
-        <div style="text-align:center;">
-            ___________________________<br>
+<div class="firma-impresion">
+<br/><br/><br/>
+<div style="text-align:center;">
+            ___________________________<br/>
             Firma del Responsable
         </div>
-    </div>
-
-    <style>
+</div>
+<style>
 @media print {
     .no-print {
         display: none !important;
