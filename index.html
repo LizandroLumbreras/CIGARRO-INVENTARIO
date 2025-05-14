@@ -102,6 +102,25 @@
         page-break-inside: avoid;
     }
 }
+
+@media print {
+    body {
+        zoom: 85%;
+        margin: 0.5cm;
+    }
+    table {
+        font-size: 11px;
+    }
+    td, th {
+        padding: 6px 4px;
+    }
+}
+
+@media print {
+    .col-codigo {
+        display: none !important;
+    }
+}
 </style>
 </head>
 <body>
@@ -143,122 +162,122 @@
 <col style="width: 12.5%;"/> <!-- Paquete -->
 <thead>
 <tr>
-<th>CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
+<th class=" col-codigo">CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
 <th>PIEZA</th>
 <th>PAQUETE/KG</th>
 </tr>
 </thead>
 <tbody id="tablaInventario">
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO 100"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO DURO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO SUAVE"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO 100"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO DURO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO SUAVE"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL BLANCO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL TOKIO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL ALASKA"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL PEPINO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="LINK BLANCO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="BENSON DORADO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="BENSON MENTHOL"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN ROJO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN AMARILLO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN BLANCO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="NUEZ ENTERA"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="NUEZ PEDAZO"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
 </tr>
 <tr>
-<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td class=" col-codigo"><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
 <td><input style="width:100%; border:none; text-align: left;" type="text" value="CHILE JAPONES"/></td>
 <td><input type="text"/></td>
 <td><input type="text"/></td>
