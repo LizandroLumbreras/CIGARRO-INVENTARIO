@@ -7,6 +7,12 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     <style>
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
@@ -160,7 +166,7 @@
         </select>
     </div>
 
-    <div id="listaInventarios" style="margin-top:20px;"></div>
+    <div id="listaInventarios" class="no-print" style="margin-top:20px;"></div>
 
     <script>
     const firebaseConfig = {
@@ -250,5 +256,32 @@
     // Cargar al inicio sin filtro
     window.onload = filtrarInventarios;
     </script>
+
+    <div class="firma-impresion">
+        <br><br><br>
+        <div style="text-align:center;">
+            ___________________________<br>
+            Firma del Responsable
+        </div>
+    </div>
+
+    <style>
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+    @media print {
+        .firma-impresion {
+            display: block;
+            margin-top: 60px;
+        }
+    }
+
+    .firma-impresion {
+        display: none;
+    }
+    </style>
 </body>
 </html>
