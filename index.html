@@ -303,16 +303,28 @@
         const fecha = document.getElementById("fecha").value;
         const venta = document.getElementById("venta").value;
 
+        if (!sucursal || !encargado || !fecha) {
+            alert("❗ Por favor, completa los campos de sucursal, encargado y fecha.");
+            return;
+        }
+
         const items = [];
         const filas = document.querySelectorAll("#tablaInventario tr");
         filas.forEach(fila => {
-            const desc = fila.cells[0].innerText.trim();
-            const pieza = fila.cells[1].querySelector("input").value.trim();
-            const paquete = fila.cells[2].querySelector("input").value.trim();
-            if (pieza || paquete) {
-                items.push({ descripcion: desc, pieza, paquete });
+            const codigo = fila.cells[0].querySelector("input")?.value.trim() || "";
+            const descripcion = fila.cells[1].querySelector("input")?.value.trim() || "";
+            const pieza = fila.cells[2].querySelector("input")?.value.trim() || "";
+            const paquete = fila.cells[3].querySelector("input")?.value.trim() || "";
+
+            if (codigo && descripcion && (pieza || paquete)) {
+                items.push({ codigo, descripcion, pieza, paquete });
             }
         });
+
+        if (items.length === 0) {
+            alert("⚠️ No hay productos con datos para guardar.");
+            return;
+        }
 
         db.collection("inventarios").add({
             sucursal,
@@ -322,10 +334,10 @@
             productos: items,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
-            alert("✅ Inventario guardado en Firebase");
+            alert("✅ Inventario guardado correctamente en Firebase.");
         }).catch(error => {
             console.error("Error al guardar:", error);
-            alert("❌ Error al guardar");
+            alert("❌ Ocurrió un error al guardar el inventario.");
         });
     }
 
@@ -350,7 +362,7 @@
 
             snapshot.forEach(doc => {
                 const data = doc.data();
-                const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
+                const productos = data.productos.map(p => `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
                 html += `<tr>
                     <td>${data.fecha || ''}</td>
                     <td>${data.sucursal || ''}</td>
@@ -370,7 +382,7 @@
 
     // Cargar al inicio sin filtro
     window.onload = filtrarInventarios;
-    </script>
+</script>
 
 <style>
 @media print {
