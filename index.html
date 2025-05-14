@@ -155,14 +155,19 @@
 <button class="save no-print" onclick="guardarInventario()">💾 Guardar en Firebase</button>
 <button class="print no-print" onclick="window.print()">🖨 Imprimir</button>
 </div>
-<table>
+<table style="table-layout: fixed;">
+<colgroup>
+    <col style="width: 70%;"> <!-- Descripción -->
+    <col style="width: 15%;"> <!-- Pieza -->
+    <col style="width: 15%;"> <!-- Paquete/KG -->
+</colgroup>
 <col style="width: 15%;"/> <!-- Código de Barras -->
 <col style="width: 60%;"/> <!-- Descripción -->
 <col style="width: 12.5%;"/> <!-- Pieza -->
 <col style="width: 12.5%;"/> <!-- Paquete -->
 <thead>
 <tr>
-<th class=" col-codigo">CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
+<th class=" col-codigo">CÓDIGO DE BARRAS</th><th style="text-align: left;">DESCRIPCIÓN</th>
 <th>PIEZA</th>
 <th>PAQUETE/KG</th>
 </tr>
