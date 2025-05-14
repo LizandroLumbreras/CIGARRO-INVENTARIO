@@ -1,1 +1,394 @@
-pagina_descripcion_legible.zip
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Inventario Cigarro con Firebase</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<style>
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info input, .info select {
+            border: none;
+            border-bottom: 1px solid #aaa;
+            padding: 4px;
+            width: 150px;
+            margin: 5px 10px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .save {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .print {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #ff3c3c;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        td input {
+            width: 100%;
+            border: none;
+            text-align: center;
+        }
+    
+@media print {
+    .firma-impresion {
+        display: block !important;
+        margin-top: 40px;
+        page-break-inside: avoid;
+    }
+}
+</style>
+</head>
+<body>
+<div class="logo">
+<img alt="Logo" height="120" src="logo.png"/>
+</div>
+<h1>INVENTARIO CIGARRO</h1>
+<div class="info">
+<label>Sucursal:
+            <select id="sucursal">
+<option value="">--Selecciona--</option>
+<option value="Central">Central</option>
+<option value="Provileon">Provileon</option>
+<option value="Osito">Osito</option>
+<option value="Rio Verde">Rio Verde</option>
+</select>
+</label>
+<label>Encargado:
+    <select id="encargado">
+<option value="">--Selecciona--</option>
+<option value="Genaro">Genaro</option>
+<option value="Sra Juany">Sra Juany</option>
+<option value="Angel">Angel</option>
+<option value="Adrian">Adrian</option>
+<option value="Sergio">Sergio</option>
+</select>
+</label>
+<label>Fecha: <input id="fecha" type="date"/></label>
+<label>Venta: <input id="venta" type="text"/></label>
+</div>
+<div class="buttons">
+<button class="save no-print" onclick="guardarInventario()">💾 Guardar en Firebase</button>
+<button class="print no-print" onclick="window.print()">🖨 Imprimir</button>
+</div>
+<table>
+<col style="width: 15%;"/> <!-- Código de Barras -->
+<col style="width: 60%;"/> <!-- Descripción -->
+<col style="width: 12.5%;"/> <!-- Pieza -->
+<col style="width: 12.5%;"/> <!-- Paquete -->
+<thead>
+<tr>
+<th>CÓDIGO DE BARRAS</th><th>DESCRIPCIÓN</th>
+<th>PIEZA</th>
+<th>PAQUETE/KG</th>
+</tr>
+</thead>
+<tbody id="tablaInventario">
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO 100"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO DURO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO BLANCO SUAVE"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO 100"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO DURO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="MARLBORO ROJO SUAVE"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL BLANCO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL TOKIO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL ALASKA"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="PALLMALL PEPINO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="LINK BLANCO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="BENSON DORADO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="BENSON MENTHOL"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN ROJO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN AMARILLO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="CELOFAN BLANCO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="NUEZ ENTERA"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="NUEZ PEDAZO"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+<tr>
+<td><input placeholder="Escanea o escribe" style="width:100%; border:none; text-align: left;" type="text"/></td>
+<td><input style="width:100%; border:none; text-align: left;" type="text" value="CHILE JAPONES"/></td>
+<td><input type="text"/></td>
+<td><input type="text"/></td>
+</tr>
+</tbody>
+</table><div class="firma-impresion">
+<br/><br/><br/>
+<div style="text-align:center;">
+            ___________________________<br/>
+            Firma del Responsable
+        </div>
+</div>
+<h2 class="no-print" style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
+<div class="no-print" style="text-align:center; margin:20px 0;">
+<label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+<select id="filtroSucursal" onchange="filtrarInventarios()">
+<option value="">-- Todas --</option>
+<option value="Central">Central</option>
+<option value="Provileon">Provileon</option>
+<option value="Osito">Osito</option>
+<option value="Rio Verde">Rio Verde</option>
+</select>
+</div>
+<div class="no-print" id="listaInventarios" style="margin-top:20px;"></div>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
+      authDomain: "inventario-cigarro.firebaseapp.com",
+      projectId: "inventario-cigarro",
+      storageBucket: "inventario-cigarro.firebasestorage.app",
+      messagingSenderId: "597989591223",
+      appId: "1:597989591223:web:f29bf1f082af7d696ea532",
+      measurementId: "G-1H4QJ39GMW"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function guardarInventario() {
+        const sucursal = document.getElementById("sucursal").value;
+        const encargado = document.getElementById("encargado").value;
+        const fecha = document.getElementById("fecha").value;
+        const venta = document.getElementById("venta").value;
+
+        const items = [];
+        const filas = document.querySelectorAll("#tablaInventario tr");
+        filas.forEach(fila => {
+            const desc = fila.cells[0].innerText.trim();
+            const pieza = fila.cells[1].querySelector("input").value.trim();
+            const paquete = fila.cells[2].querySelector("input").value.trim();
+            if (pieza || paquete) {
+                items.push({ descripcion: desc, pieza, paquete });
+            }
+        });
+
+        db.collection("inventarios").add({
+            sucursal,
+            encargado,
+            fecha,
+            venta,
+            productos: items,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            alert("✅ Inventario guardado en Firebase");
+        }).catch(error => {
+            console.error("Error al guardar:", error);
+            alert("❌ Error al guardar");
+        });
+    }
+
+    function filtrarInventarios() {
+        const contenedor = document.getElementById("listaInventarios");
+        const filtro = document.getElementById("filtroSucursal").value;
+        contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+
+        let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+        if (filtro) {
+            consulta = consulta.where("sucursal", "==", filtro);
+        }
+
+        consulta.get().then(snapshot => {
+            if (snapshot.empty) {
+                contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
+                return;
+            }
+
+            let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+            html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Venta</th><th>Productos</th></tr></thead><tbody>';
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
+                html += `<tr>
+                    <td>${data.fecha || ''}</td>
+                    <td>${data.sucursal || ''}</td>
+                    <td>${data.encargado || ''}</td>
+                    <td>${data.venta || ''}</td>
+                    <td>${productos}</td>
+                </tr>`;
+            });
+
+            html += "</tbody></table>";
+            contenedor.innerHTML = html;
+        }).catch(error => {
+            contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+            console.error("Error al cargar inventarios:", error);
+        });
+    }
+
+    // Cargar al inicio sin filtro
+    window.onload = filtrarInventarios;
+    </script>
+
+<style>
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+    @media print {
+        .firma-impresion {
+            display: block;
+            margin-top: 60px;
+        }
+    }
+
+    .firma-impresion {
+        display: none;
+    }
+    </style>
+</body>
+</html>
