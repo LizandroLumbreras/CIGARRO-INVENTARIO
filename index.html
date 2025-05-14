@@ -12,30 +12,36 @@
             padding: 20px;
             background-color: #f9f9f9;
         }
+
         h1 {
             text-align: center;
         }
+
         .logo {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .info {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .info input {
+
+        .info input, .info select {
             border: none;
             border-bottom: 1px solid #aaa;
             padding: 4px;
             width: 150px;
             margin: 5px 10px;
         }
+
         .buttons {
             text-align: center;
             margin: 20px 0;
         }
+
         .buttons button {
             padding: 10px 20px;
             font-size: 16px;
@@ -44,14 +50,17 @@
             border: none;
             border-radius: 5px;
         }
+
         .save {
             background-color: #28a745;
             color: white;
         }
+
         .print {
             background-color: #007bff;
             color: white;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -60,16 +69,19 @@
             border-radius: 10px;
             overflow: hidden;
         }
+
         th {
             background-color: #ff3c3c;
             color: white;
             padding: 10px;
         }
+
         td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: center;
         }
+
         td input {
             width: 100%;
             border: none;
@@ -86,14 +98,14 @@
 
     <div class="info">
         <label>Sucursal:
-    <select id="sucursal">
-        <option value="">--Selecciona--</option>
-        <option value="Central">Central</option>
-        <option value="Provileon">Provileon</option>
-        <option value="Osito">Osito</option>
-        <option value="Rio Verde">Rio Verde</option>
-    </select>
-</label>
+            <select id="sucursal">
+                <option value="">--Selecciona--</option>
+                <option value="Central">Central</option>
+                <option value="Provileon">Provileon</option>
+                <option value="Osito">Osito</option>
+                <option value="Rio Verde">Rio Verde</option>
+            </select>
+        </label>
         <label>Encargado: <input type="text" id="encargado"></label>
         <label>Fecha: <input type="date" id="fecha"></label>
         <label>Venta: <input type="text" id="venta"></label>
@@ -102,7 +114,6 @@
     <div class="buttons">
         <button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
         <button class="print" onclick="window.print()">🖨 Imprimir</button>
-        <button class="print" onclick="verUltimosInventarios()">📋 Ver inventarios guardados</button>
     </div>
 
     <table>
@@ -114,34 +125,52 @@
             </tr>
         </thead>
         <tbody id="tablaInventario">
+            <tr><td>MARLBORO BLANCO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>MARLBORO BLANCO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>MARLBORO BLANCO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
             <tr><td>MARLBORO ROJO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>MARLBORO ROJO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>MARLBORO ROJO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>PALLMALL BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>PALLMALL TOKIO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>PALLMALL ALASKA</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>PALLMALL PEPINO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>LINK BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>BENSON DORADO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>BENSON MENTHOL</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>CELOFAN ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>CELOFAN AMARILLO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>CELOFAN BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>NUEZ ENTERA</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>NUEZ PEDAZO</td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td>CHILE JAPONES</td><td><input type="text"></td><td><input type="text"></td></tr>
         </tbody>
     </table>
 
     <h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
-    
-<div style="text-align:center; margin:20px 0;">
-    <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
-    <select id="filtroSucursal" onchange="verInventariosFiltrados()">
-        <option value="">-- Todas --</option>
-        <option value="Central">Central</option>
-        <option value="Provileon">Provileon</option>
-        <option value="Osito">Osito</option>
-        <option value="Rio Verde">Rio Verde</option>
-    </select>
-</div>
 
-<div id="listaInventarios" style="margin-top:20px;"></div>
+    <div style="text-align:center; margin:20px 0;">
+        <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+        <select id="filtroSucursal" onchange="filtrarInventarios()">
+            <option value="">-- Todas --</option>
+            <option value="Central">Central</option>
+            <option value="Provileon">Provileon</option>
+            <option value="Osito">Osito</option>
+            <option value="Rio Verde">Rio Verde</option>
+        </select>
+    </div>
+
+    <div id="listaInventarios" style="margin-top:20px;"></div>
 
     <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
-        authDomain: "inventario-cigarro.firebaseapp.com",
-        projectId: "inventario-cigarro",
-        storageBucket: "inventario-cigarro.firebasestorage.app",
-        messagingSenderId: "597989591223",
-        appId: "1:597989591223:web:f29bf1f082af7d696ea532",
-        measurementId: "G-1H4QJ39GMW"
+      apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
+      authDomain: "inventario-cigarro.firebaseapp.com",
+      projectId: "inventario-cigarro",
+      storageBucket: "inventario-cigarro.firebasestorage.app",
+      messagingSenderId: "597989591223",
+      appId: "1:597989591223:web:f29bf1f082af7d696ea532",
+      measurementId: "G-1H4QJ39GMW"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -179,55 +208,19 @@
         });
     }
 
-    
-function verInventariosFiltrados() {
-    const contenedor = document.getElementById("listaInventarios");
-    const filtro = document.getElementById("filtroSucursal").value;
-    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
-
-    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
-    if (filtro) {
-        consulta = consulta.where("sucursal", "==", filtro);
-    }
-
-    consulta.get()
-    .then(snapshot => {
-        if (snapshot.empty) {
-            contenedor.innerHTML = "<p>No hay inventarios guardados para esta sucursal.</p>";
-            return;
-        }
-
-        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
-        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Venta</th><th>Productos</th></tr></thead><tbody>';
-
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
-            html += `<tr>
-                <td>${data.fecha || ''}</td>
-                <td>${data.sucursal || ''}</td>
-                <td>${data.encargado || ''}</td>
-                <td>${data.venta || ''}</td>
-                <td>${productos}</td>
-            </tr>`;
-        });
-
-        html += "</tbody></table>";
-        contenedor.innerHTML = html;
-    })
-    .catch(error => {
-        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
-        console.error("Error al cargar inventarios:", error);
-    });
-}
- {
+    function filtrarInventarios() {
         const contenedor = document.getElementById("listaInventarios");
+        const filtro = document.getElementById("filtroSucursal").value;
         contenedor.innerHTML = "<em>Cargando inventarios...</em>";
 
-        db.collection("inventarios").orderBy("timestamp", "desc").get()
-        .then(snapshot => {
+        let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+        if (filtro) {
+            consulta = consulta.where("sucursal", "==", filtro);
+        }
+
+        consulta.get().then(snapshot => {
             if (snapshot.empty) {
-                contenedor.innerHTML = "<p>No hay inventarios guardados aún.</p>";
+                contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
                 return;
             }
 
@@ -248,12 +241,14 @@ function verInventariosFiltrados() {
 
             html += "</tbody></table>";
             contenedor.innerHTML = html;
-        })
-        .catch(error => {
+        }).catch(error => {
             contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
             console.error("Error al cargar inventarios:", error);
         });
     }
+
+    // Cargar al inicio sin filtro
+    window.onload = filtrarInventarios;
     </script>
 </body>
 </html>
