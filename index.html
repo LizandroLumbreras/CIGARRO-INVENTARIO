@@ -133,8 +133,8 @@
 <label>Venta: <input id="venta" type="text"/></label>
 </div>
 <div class="buttons">
-<button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
-<button class="print" onclick="window.print()">🖨 Imprimir</button>
+<button class="save no-print" onclick="guardarInventario()">💾 Guardar en Firebase</button>
+<button class="print no-print" onclick="window.print()">🖨 Imprimir</button>
 </div>
 <table>
 <col style="width: 15%;"/> <!-- Código de Barras -->
@@ -271,8 +271,8 @@
             Firma del Responsable
         </div>
 </div>
-<h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
-<div style="text-align:center; margin:20px 0;">
+<h2 class="no-print" style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
+<div class="no-print" style="text-align:center; margin:20px 0;">
 <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
 <select id="filtroSucursal" onchange="filtrarInventarios()">
 <option value="">-- Todas --</option>
