@@ -157,6 +157,15 @@
             }
 
             .info input {
+                .info select {
+                    border: none;
+                    border-bottom: 2px solid #ccc;
+                    padding: 6px;
+                    width: 180px;
+                    background: transparent;
+                    font-size: 14px;
+                    font-family: 'Poppins', sans-serif;
+                }
                 width: 100%;
             }
         }
@@ -172,8 +181,18 @@
 
         <div class="info">
             <div>
-                <strong>Sucursal:</strong><br><input type="text" placeholder="Sucursal">
-                <br><strong>Encargado:</strong><br><input type="text" placeholder="Encargado">
+                <strong>Sucursal:</strong><br><<select id="sucursal">
+                    <option value="">Selecciona una sucursal</option>
+                    <option value="OSITO">OSITO</option>
+                    <option value="CENTRAL">CENTRAL</option>
+                    <option value="PROVILEON">PROVILEON</option>
+                    <option value="MONTEMORELOS">MONTEMORELOS</option>
+                    <option value="ALLENDE">ALLENDE</option>
+                    <option value="MATRIZ">MATRIZ</option>
+                    <option value="RIO VERDE">RIO VERDE</option>
+                    <option value="B41">B41</option>
+                </select>
+                    <br><strong>Encargado:</strong><br><input type="text" placeholder="Encargado">
             </div>
             <div>
                 <strong>Fecha:</strong><br><input type="date">
@@ -234,7 +253,7 @@
         }
 
         function enviarWhatsApp() {
-            const sucursal = document.querySelector('input[placeholder="Sucursal"]').value;
+            const sucursal = document.getElementById('sucursal').value;
             const encargado = document.querySelector('input[placeholder="Encargado"]').value;
             const fecha = document.querySelector('input[type="date"]').value;
             const venta = document.querySelector('input[placeholder="Venta"]').value;
