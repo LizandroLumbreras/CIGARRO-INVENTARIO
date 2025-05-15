@@ -4,6 +4,67 @@
     <meta charset="UTF-8">
     <title>Inventario Cigarro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    @media print {
+    body {
+        font-size: 11px;
+        margin: 0;
+        padding: 0;
+        color: black;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 80px;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: nowrap;
+        margin-bottom: 10px;
+    }
+
+    .info div {
+        font-size: 11px;
+    }
+
+    .info input,
+    .info select {
+        font-size: 11px;
+        border: none;
+        background: transparent;
+        width: 100%;
+    }
+
+    .print-button {
+        display: none !important;
+    }
+
+    table {
+        font-size: 10px;
+        page-break-inside: avoid;
+    }
+
+    th, td {
+        padding: 4px;
+    }
+
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+}
+
     <style>
         :root {
             --bg-color: #f0f2f5;
