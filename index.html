@@ -76,6 +76,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease;
+            margin: 5px;
         }
 
         .print-button button:hover {
@@ -194,47 +195,52 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Aquí puedes dejar tus filas como las tienes -->
                 <tr><td>MARLBORO BLANCO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
                 <tr><td>MARLBORO BLANCO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <!-- ...continúan todas las filas -->
+                <tr><td>MARLBORO BLANCO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>MARLBORO ROJO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>MARLBORO ROJO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>MARLBORO ROJO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>PALLMALL BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>PALLMALL TOKIO</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>LINK BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>BENSON DORADO</td><td><input type="text"></td><td><input type="text"></td></tr>
             </tbody>
         </table>
     </div>
 
     <a class="whatsapp-float" href="#" onclick="enviarWhatsApp()" target="_blank">📲 Enviar por WhatsApp</a>
 
-<script>
-    function limpiarFormulario() {
-        // Limpiar los inputs del encabezado
-        document.querySelectorAll('.info input').forEach(input => input.value = '');
+    <script>
+        function limpiarFormulario() {
+            // Limpiar los inputs del encabezado
+            document.querySelectorAll('.info input').forEach(input => input.value = '');
 
-        // Limpiar los inputs de la tabla
-        document.querySelectorAll('table tbody input').forEach(input => input.value = '');
-    }
+            // Limpiar los inputs de la tabla
+            document.querySelectorAll('table tbody input').forEach(input => input.value = '');
+        }
 
-    function enviarWhatsApp() {
-        const sucursal = document.querySelector('input[placeholder="Sucursal"]').value;
-        const encargado = document.querySelector('input[placeholder="Encargado"]').value;
-        const fecha = document.querySelector('input[type="date"]').value;
-        const venta = document.querySelector('input[placeholder="Venta"]').value;
+        function enviarWhatsApp() {
+            const sucursal = document.querySelector('input[placeholder="Sucursal"]').value;
+            const encargado = document.querySelector('input[placeholder="Encargado"]').value;
+            const fecha = document.querySelector('input[type="date"]').value;
+            const venta = document.querySelector('input[placeholder="Venta"]').value;
 
-        let mensaje = `Sucursal: ${sucursal}%0AEncargado: ${encargado}%0AFecha: ${fecha}%0AVenta: ${venta}%0A%0AInventario:%0A`;
+            let mensaje = `Sucursal: ${sucursal}%0AEncargado: ${encargado}%0AFecha: ${fecha}%0AVenta: ${venta}%0A%0AInventario:%0A`;
 
-        const filas = document.querySelectorAll("tbody tr");
-        filas.forEach(fila => {
-            const desc = fila.cells[0].innerText.trim();
-            const pieza = fila.cells[1].querySelector("input").value.trim();
-            const paquete = fila.cells[2].querySelector("input").value.trim();
-            if (pieza || paquete) {
-                mensaje += `${desc} | ${pieza} | ${paquete}%0A`;
-            }
-        });
+            const filas = document.querySelectorAll("tbody tr");
+            filas.forEach(fila => {
+                const desc = fila.cells[0].innerText.trim();
+                const pieza = fila.cells[1].querySelector("input").value.trim();
+                const paquete = fila.cells[2].querySelector("input").value.trim();
+                if (pieza || paquete) {
+                    mensaje += `${desc} | ${pieza} | ${paquete}%0A`;
+                }
+            });
 
-        const url = `https://wa.me/?text=${mensaje}`;
-        window.open(url, '_blank');
-    }
-</script>
+            const url = `https://wa.me/?text=${mensaje}`;
+            window.open(url, '_blank');
+        }
+    </script>
 </body>
 </html>
-
