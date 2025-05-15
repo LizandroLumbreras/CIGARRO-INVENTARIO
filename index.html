@@ -112,8 +112,20 @@
             text-align: center;
         }
 
+        td:nth-child(1),
+        th:nth-child(1) {
+            text-align: left; /* Alinea CLAVE a la izquierda */
+        }
+
         td:nth-child(2) {
-            text-align: left;
+            text-align: left; /* Alinea DESCRIPCIÓN a la izquierda */
+        }
+
+        table input[type="text"] {
+            width: 70px; /* Tamaño para PIEZA y PAQUETE/KG */
+            padding: 4px;
+            text-align: center;
+            font-size: 14px;
         }
 
         .firma-impresion {
@@ -194,15 +206,6 @@
                 size: A4 portrait;
                 margin: 10mm;
             }
-        }
-
-        /* ✅ Ajuste para campos PIEZA y PAQUETE/KG */
-        table input[type="text"] {
-            width: 70px;
-            padding: 4px;
-            text-align: center;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
