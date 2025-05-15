@@ -372,14 +372,15 @@
 
             snapshot.forEach(doc => {
                 const data = doc.data();
-                const productos = data.productos.map(p => `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
-                html += `<tr>
-                    <td>${data.fecha || ''}</td>
-                    <td>${data.sucursal || ''}</td>
-                    <td>${data.encargado || ''}</td>
-                    <td>${data.venta || ''}</td>
-                    <td>${productos}</td>
-                </tr>`;
+               const productos = data.productos.map(p => `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
+html += `<tr>
+    <td>${data.fecha || ''}</td>
+    <td>${data.sucursal || ''}</td>
+    <td>${data.encargado || ''}</td>
+    <td>${data.venta || ''}</td>
+    <td>${productos}</td>
+</tr>`;
+
             });
 
             html += "</tbody></table>";
