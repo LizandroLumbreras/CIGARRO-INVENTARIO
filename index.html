@@ -148,7 +148,38 @@
             background-color: #1ebe5d;
         }
 
+        
         @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            html, body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+
+            table {
+                page-break-inside: avoid;
+            }
+
+            .print-button, .whatsapp-float {
+                display: none !important;
+            }
+
+            input, select {
+                border: none;
+                background: transparent;
+            }
+        }
+
             .print-button, .whatsapp-float {
                 display: none !important;
             }
@@ -169,7 +200,19 @@
                 width: 100%;
             }
         }
-    </style>
+    
+        .firma-impresion {
+            display: none;
+        }
+
+        @media print {
+            .firma-impresion {
+                display: block;
+                margin-top: 50px;
+            }
+        }
+
+</style>
 </head>
 <body>
     <div class="container">
@@ -240,7 +283,14 @@
                 <tr><td>CHILE JAPONES</td><td><input type="text"></td><td><input type="text"></td></tr>
             </tbody>
         </table>
+    
+    <div class="firma-impresion">
+        <br><br><br>
+        <p style="text-align:center; font-weight:600;">Firma del encargado</p>
+        <div style="border-top: 1px solid #000; width: 300px; margin: auto;"></div>
     </div>
+
+</div>
 
     <a class="whatsapp-float" href="#" onclick="enviarWhatsApp()" target="_blank">📲 Enviar por WhatsApp</a>
 
