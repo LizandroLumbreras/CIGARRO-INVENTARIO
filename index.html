@@ -1,70 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Inventario Cigarro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    @media print {
-    body {
-        font-size: 11px;
-        margin: 0;
-        padding: 0;
-        color: black;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    .logo img {
-        height: 80px;
-    }
-
-    h1 {
-        font-size: 18px;
-        margin: 10px 0;
-    }
-
-    .info {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: nowrap;
-        margin-bottom: 10px;
-    }
-
-    .info div {
-        font-size: 11px;
-    }
-
-    .info input,
-    .info select {
-        font-size: 11px;
-        border: none;
-        background: transparent;
-        width: 100%;
-    }
-
-    .print-button {
-        display: none !important;
-    }
-
-    table {
-        font-size: 10px;
-        page-break-inside: avoid;
-    }
-
-    th, td {
-        padding: 4px;
-    }
-
-    @page {
-        size: A4 portrait;
-        margin: 10mm;
-    }
-}
-
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -182,6 +122,67 @@
                 flex-direction: column;
             }
         }
+
+        @media print {
+            body {
+                font-size: 11px;
+                margin: 0;
+                padding: 0;
+                color: black;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .logo img {
+                height: 80px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin: 10px 0;
+            }
+
+            .info {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: nowrap;
+                margin-bottom: 10px;
+            }
+
+            .info div {
+                font-size: 11px;
+            }
+
+            .info input,
+            .info select {
+                font-size: 11px;
+                border: none;
+                background: transparent;
+                width: 100%;
+            }
+
+            .print-button {
+                display: none !important;
+            }
+
+            table {
+                font-size: 10px;
+                page-break-inside: avoid;
+            }
+
+            th, td {
+                padding: 4px;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+        }
     </style>
 </head>
 <body>
@@ -192,7 +193,6 @@
 
         <h1>INVENTARIO CIGARRO</h1>
 
-        <!-- INFO HORIZONTAL -->
         <div class="info">
             <div>
                 <strong>Sucursal:</strong><br>
@@ -222,13 +222,11 @@
             </div>
         </div>
 
-        <!-- BOTONES -->
         <div class="print-button">
             <button onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
             <button onclick="limpiarFormulario()">🧹 Limpiar formulario</button>
         </div>
 
-        <!-- TABLA DE PRODUCTOS -->
         <table>
             <thead>
                 <tr>
@@ -240,31 +238,7 @@
             </thead>
             <tbody>
                 <tr><td>75035259</td><td>MARLBORO BLANCO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75068738</td><td>MARLBORO BLANCO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75068745</td><td>MARLBORO BLANCO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75021597</td><td>MARLBORO ROJO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75001322</td><td>MARLBORO ROJO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75001315</td><td>MARLBORO ROJO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75025271</td><td>MARLBORO FUSION</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75068776</td><td>BENSON DORADO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75016777</td><td>BENSON MENTHOL</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75068783</td><td>MARLBORO RUBI</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75071295</td><td>PALL MALL ALASKA</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>8346917</td><td>PALL MALL BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75064648</td><td>PALL MALL MYKONOS PEPINO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75052836</td><td>PALL MALL TOKYO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>7503040150115</td><td>LINK ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>7502252634314</td><td>LINK BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>7503040150115</td><td>LINK ICE</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>75046521</td><td>LUCKY STRIKE</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>1247</td><td>CELOFAN ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>2229</td><td>CELOFAN AMARILLO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>1248</td><td>CELOFAN BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>1249</td><td>NUEZ PEDAZO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>1250</td><td>NUEZ ENTERA</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>230001</td><td>NUEZ GRANILLO</td><td><input type="text"></td><td><input type="text"></td></tr>
-    <tr><td>40</td><td>CHILE JAPONES</td><td><input type="text"></td><td><input type="text"></td></tr> 
-                <!-- Puedes pegar aquí el bloque de filas con clave y descripción -->
+                <!-- Puedes agregar más filas aquí -->
             </tbody>
         </table>
     </div>
@@ -277,4 +251,3 @@
     </script>
 </body>
 </html>
-
