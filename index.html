@@ -1,279 +1,186 @@
 
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<title>Inventario Productos Cigarro</title>
-<style>
-    body { font-family: Arial; padding: 20px; background-color: #f9f9f9; }
-    h1 { text-align: center; }
-    table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    th { background: #ff3c3c; color: white; padding: 10px; }
-    td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    td input { width: 100%; border: none; text-align: center; }
-</style>
-<style>
-.firma-impresion {
-    display: none;
-}
-@media print {
-    .firma-impresion {
-        display: block !important;
-        page-break-inside: avoid;
-        margin-top: 80px;
-        text-align: center;
-    }
-}
-</style></head>
+    <meta charset="UTF-8">
+    <title>Inventario Cigarro con Firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .info input {
+            border: none;
+            border-bottom: 1px solid #aaa;
+            padding: 4px;
+            width: 150px;
+            margin: 5px 10px;
+        }
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .save {
+            background-color: #28a745;
+            color: white;
+        }
+        .print {
+            background-color: #007bff;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background-color: #ff3c3c;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        td input {
+            width: 100%;
+            border: none;
+            text-align: center;
+        }
+    </style>
+</head>
 <body>
-<div class="logo" style="text-align:center; margin-bottom:20px;">
-<img alt="Logo" src="logo.png" style="width: 400px; height: auto;"/>
+    <div class="logo">
+        <img src="logo.png" alt="Logo" height="120">
+    </div>
 
+    <h1>INVENTARIO CIGARRO</h1>
 
-<h1>INVENTARIO CIGARROS</h1>
+    <div class="info">
+        <label>Sucursal:
+    <select id="sucursal">
+        <option value="">--Selecciona--</option>
+        <option value="Central">Central</option>
+        <option value="Provileon">Provileon</option>
+        <option value="Osito">Osito</option>
+        <option value="Rio Verde">Rio Verde</option>
+    </select>
+</label>
+        <label>Encargado: <input type="text" id="encargado"></label>
+        <label>Fecha: <input type="date" id="fecha"></label>
+        <label>Venta: <input type="text" id="venta"></label>
+    </div>
 
-<div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
-    <button onclick="guardarInventario()" style="padding:10px 20px; background-color: #28a745; color:white; border:none; border-radius:5px; font-size:16px;">💾 Guardar en Firebase</button>
-    <button onclick="window.print()" style="padding:10px 20px; background-color: #007bff; color:white; border:none; border-radius:5px; font-size:16px;">🖨 Imprimir</button>
-    <button onclick="limpiarFormulario()" style="padding:10px 20px; background-color: #ffc107; color:black; border:none; border-radius:5px; font-size:16px;">🧹 Limpiar</button>
-</div>
+    <div class="buttons">
+        <button class="save" onclick="guardarInventario()">💾 Guardar en Firebase</button>
+        <button class="print" onclick="window.print()">🖨 Imprimir</button>
+        <button class="print" onclick="verUltimosInventarios()">📋 Ver inventarios guardados</button>
+    </div>
 
-<table>
-<thead>
-<tr>
-<th>CÓDIGO</th>
-<th>NOMBRE DEL PRODUCTO</th>
-<th>PIEZAS</th>
-<th>PAQUETE</th>
-</tr>
-</thead>
-<tbody>
-<tr><td><input value="75001476"/></td><td><input value="DELICADOS OVALADOS"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75063726"/></td><td><input value="CHESTERFIELD 20 C/FILTRO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75067854"/></td><td><input value="CHESTERFIELD FILTRO 24’S"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75069902"/></td><td><input value="L&amp;M RED LABEL (DALTON)"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75068776"/></td><td><input value="BENSON DORADOS CAJA DURA"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75016777"/></td><td><input value="BENSON MENTOL CAJA DURA"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="50020"/></td><td><input value="BENSON GOLD PERL LIGHT"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75047237"/></td><td><input value="BENSON MINI PERL LIGHT"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75068745"/></td><td><input value="MARLB BLANCO SUAVE"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75068728"/></td><td><input value="MARLB BLANCO DURO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75035255"/></td><td><input value="MARLB BLANCO 100"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75068844"/></td><td><input value="MARLB BLANCO 14"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75042646"/></td><td><input value="MARLB BLANCO 14 100"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75065508"/></td><td><input value="MARLB ROJO 100 14"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75001215"/></td><td><input value="MARLB ROJO SUAVE"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75001322"/></td><td><input value="MARLB ROJO DURO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75021597"/></td><td><input value="MARLB 100 ROJO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75001235"/></td><td><input value="MARLB ROJO 14’S"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75021053"/></td><td><input value="MARLB ICE XPRESS"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75068783"/></td><td><input value="MARLB RUBY FUSION"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75066245"/></td><td><input value="MARLB FUSION SUMMER (SANDIA)"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75056208"/></td><td><input value="BENSON &amp; HEDGES CRYSTAL VIOLET"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75059514"/></td><td><input value="BENSON &amp; HEDGES CRYSTAL BLUE"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75001360"/></td><td><input value="MARLB GARDEN FUSION 100"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75046521"/></td><td><input value="LUCKY STRIKE (RELEIGHT)"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="8346917"/></td><td><input value="P MALL XL BLANCO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75071776"/></td><td><input value="P MALL XL ROJO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75071295"/></td><td><input value="P MALL XL ALASKA"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75052836"/></td><td><input value="P MALL TOKYO MIDNIGHT"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="75046468"/></td><td><input value="P MALL MYKONOS NIGHTFALL (PEPINO)"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="750304150023"/></td><td><input value="GARAÑON ROJO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="7502252631313"/></td><td><input value="GARAÑON BLANCO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="750304015143"/></td><td><input value="LINK ROJO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="7502252634314"/></td><td><input value="LINK BLANCO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="7503040150115"/></td><td><input value="LINK ICE FUSION"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="1247"/></td><td><input value="CELOFAN ROJO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="2229"/></td><td><input value="CELOFAN AMARILLO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="1248"/></td><td><input value="CELOFAN BLANCO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="40"/></td><td><input value="CHILE JAPONES"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="1250"/></td><td><input value="NUEZ ENTERA"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="1292"/></td><td><input value="NUEZ PEDAZO"/></td><td><input/></td><td><input/></td></tr>
-<tr><td><input value="230001"/></td><td><input value="NUEZ GRANILLO"/></td><td><input/></td><td><input/></td></tr>
-</tbody>
-</table>
-<h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
-<div style="text-align:center; margin:20px 0;">
-<label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
-<select id="filtroSucursal" onchange="filtrarInventarios()">
-<option value="">-- Todas --</option>
-<option value="Central">Central</option>
-<option value="Provileon">Provileon</option>
-<option value="Osito">Osito</option>
-<option value="Rio Verde">Rio Verde</option>
-</select>
-</div>
-<div id="listaInventarios" style="margin-top:20px;"></div>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
-function filtrarInventarios() {
-    const contenedor = document.getElementById("listaInventarios");
-    const filtro = document.getElementById("filtroSucursal").value;
-    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+    <table>
+        <thead>
+            <tr>
+                <th>DESCRIPCIÓN</th>
+                <th>PIEZA</th>
+                <th>PAQUETE/KG</th>
+            </tr>
+        </thead>
+        <tbody id="tablaInventario">
+            <tr><td>MARLBORO ROJO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
+        </tbody>
+    </table>
 
-    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
-    if (filtro) {
-        consulta = consulta.where("sucursal", "==", filtro);
-    }
-
-    consulta.get().then(snapshot => {
-        if (snapshot.empty) {
-            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
-            return;
-        }
-
-        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
-        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
-
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const productos = data.productos.map(p => 
-                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
-            ).join("<br>");
-            html += `<tr>
-                <td>${data.fecha || ''}</td>
-                <td>${data.sucursal || ''}</td>
-                <td>${data.encargado || ''}</td>
-                <td>${productos}</td>
-            </tr>`;
-        });
-
-        html += "</tbody></table>";
-        contenedor.innerHTML = html;
-    }).catch(error => {
-        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
-        console.error("Error al cargar inventarios:", error);
-    });
-}
-window.onload = filtrarInventarios;
-
-
-function limpiarFormulario() {
-    document.getElementById("sucursal").value = "";
-    document.getElementById("encargado").value = "";
-    document.getElementById("fecha").value = "";
-    const filas = document.querySelectorAll("tbody tr");
-    filas.forEach(fila => {
-        fila.cells[2].querySelector("input").value = "";
-        fila.cells[3].querySelector("input").value = "";
-    });
-}
-
-</script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js">
-function filtrarInventarios() {
-    const contenedor = document.getElementById("listaInventarios");
-    const filtro = document.getElementById("filtroSucursal").value;
-    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
-
-    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
-    if (filtro) {
-        consulta = consulta.where("sucursal", "==", filtro);
-    }
-
-    consulta.get().then(snapshot => {
-        if (snapshot.empty) {
-            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
-            return;
-        }
-
-        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
-        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
-
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const productos = data.productos.map(p => 
-                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
-            ).join("<br>");
-            html += `<tr>
-                <td>${data.fecha || ''}</td>
-                <td>${data.sucursal || ''}</td>
-                <td>${data.encargado || ''}</td>
-                <td>${productos}</td>
-            </tr>`;
-        });
-
-        html += "</tbody></table>";
-        contenedor.innerHTML = html;
-    }).catch(error => {
-        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
-        console.error("Error al cargar inventarios:", error);
-    });
-}
-window.onload = filtrarInventarios;
-
-
-function limpiarFormulario() {
-    document.getElementById("sucursal").value = "";
-    document.getElementById("encargado").value = "";
-    document.getElementById("fecha").value = "";
-    const filas = document.querySelectorAll("tbody tr");
-    filas.forEach(fila => {
-        fila.cells[2].querySelector("input").value = "";
-        fila.cells[3].querySelector("input").value = "";
-    });
-}
-
-</script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
-    authDomain: "inventario-cigarro.firebaseapp.com",
-    projectId: "inventario-cigarro",
-    storageBucket: "inventario-cigarro.appspot.com",
-    messagingSenderId: "597989591223",
-    appId: "1:597989591223:web:f29bf1f082af7d696ea532"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  function guardarInventario() {
+    <h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
     
-    const sucursal = document.getElementById("sucursal").value;
-    const encargado = document.getElementById("encargado").value;
-    const fecha = document.getElementById("fecha").value;
+<div style="text-align:center; margin:20px 0;">
+    <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+    <select id="filtroSucursal" onchange="verInventariosFiltrados()">
+        <option value="">-- Todas --</option>
+        <option value="Central">Central</option>
+        <option value="Provileon">Provileon</option>
+        <option value="Osito">Osito</option>
+        <option value="Rio Verde">Rio Verde</option>
+    </select>
+</div>
 
-    if (!sucursal || !encargado || !fecha) {
-      alert("❗ Por favor, completa los campos de Sucursal, Encargado y Fecha.");
-      return;
+<div id="listaInventarios" style="margin-top:20px;"></div>
+
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
+        authDomain: "inventario-cigarro.firebaseapp.com",
+        projectId: "inventario-cigarro",
+        storageBucket: "inventario-cigarro.firebasestorage.app",
+        messagingSenderId: "597989591223",
+        appId: "1:597989591223:web:f29bf1f082af7d696ea532",
+        measurementId: "G-1H4QJ39GMW"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function guardarInventario() {
+        const sucursal = document.getElementById("sucursal").value;
+        const encargado = document.getElementById("encargado").value;
+        const fecha = document.getElementById("fecha").value;
+        const venta = document.getElementById("venta").value;
+
+        const items = [];
+        const filas = document.querySelectorAll("#tablaInventario tr");
+        filas.forEach(fila => {
+            const desc = fila.cells[0].innerText.trim();
+            const pieza = fila.cells[1].querySelector("input").value.trim();
+            const paquete = fila.cells[2].querySelector("input").value.trim();
+            if (pieza || paquete) {
+                items.push({ descripcion: desc, pieza, paquete });
+            }
+        });
+
+        db.collection("inventarios").add({
+            sucursal,
+            encargado,
+            fecha,
+            venta,
+            productos: items,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            alert("✅ Inventario guardado en Firebase");
+        }).catch(error => {
+            console.error("Error al guardar:", error);
+            alert("❌ Error al guardar");
+        });
     }
 
-    const filas = document.querySelectorAll("tbody tr");
-    const productos = [];
-
-    filas.forEach(fila => {
-      const codigo = fila.cells[0].querySelector("input").value.trim();
-      const nombre = fila.cells[1].querySelector("input").value.trim();
-      const piezas = fila.cells[2].querySelector("input").value.trim();
-      const paquete = fila.cells[3].querySelector("input").value.trim();
-
-      if (codigo && nombre && (piezas || paquete)) {
-        productos.push({ codigo, descripcion: nombre, pieza: piezas, paquete });
-      }
-    });
-
-    if (productos.length === 0) {
-      alert("⚠️ No hay productos válidos para guardar.");
-      return;
-    }
-
-    db.collection("inventarios").add({
-      sucursal,
-      encargado,
-      fecha,
-      fecha: new Date().toISOString().split("T")[0],
-      productos,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("✅ Inventario guardado correctamente.");
-    }).catch(err => {
-      console.error("Error al guardar:", err);
-      alert("❌ Error al guardar el inventario.");
-    });
-  }
-
-function filtrarInventarios() {
+    
+function verInventariosFiltrados() {
     const contenedor = document.getElementById("listaInventarios");
     const filtro = document.getElementById("filtroSucursal").value;
     contenedor.innerHTML = "<em>Cargando inventarios...</em>";
@@ -283,53 +190,70 @@ function filtrarInventarios() {
         consulta = consulta.where("sucursal", "==", filtro);
     }
 
-    consulta.get().then(snapshot => {
+    consulta.get()
+    .then(snapshot => {
         if (snapshot.empty) {
-            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
+            contenedor.innerHTML = "<p>No hay inventarios guardados para esta sucursal.</p>";
             return;
         }
 
         let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
-        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
+        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Venta</th><th>Productos</th></tr></thead><tbody>';
 
         snapshot.forEach(doc => {
             const data = doc.data();
-            const productos = data.productos.map(p => 
-                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
-            ).join("<br>");
+            const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
             html += `<tr>
                 <td>${data.fecha || ''}</td>
                 <td>${data.sucursal || ''}</td>
                 <td>${data.encargado || ''}</td>
+                <td>${data.venta || ''}</td>
                 <td>${productos}</td>
             </tr>`;
         });
 
         html += "</tbody></table>";
         contenedor.innerHTML = html;
-    }).catch(error => {
+    })
+    .catch(error => {
         contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
         console.error("Error al cargar inventarios:", error);
     });
 }
-window.onload = filtrarInventarios;
+ {
+        const contenedor = document.getElementById("listaInventarios");
+        contenedor.innerHTML = "<em>Cargando inventarios...</em>";
 
+        db.collection("inventarios").orderBy("timestamp", "desc").get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                contenedor.innerHTML = "<p>No hay inventarios guardados aún.</p>";
+                return;
+            }
 
-function limpiarFormulario() {
-    document.getElementById("sucursal").value = "";
-    document.getElementById("encargado").value = "";
-    document.getElementById("fecha").value = "";
-    const filas = document.querySelectorAll("tbody tr");
-    filas.forEach(fila => {
-        fila.cells[2].querySelector("input").value = "";
-        fila.cells[3].querySelector("input").value = "";
-    });
-}
+            let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+            html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Venta</th><th>Productos</th></tr></thead><tbody>';
 
-</script>
-<div style="margin-top: 80px; text-align: center;">
-<p>____________________________________</p>
-<p><strong>Firma del Encargado</strong></p>
-</div>
-<div class="firma-impresion" style="margin-top: 80px; text-align: center;"><p>Firma del Encargado</p><p></p></div></body>
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const productos = data.productos.map(p => `${p.descripcion}: ${p.pieza} / ${p.paquete}`).join("<br>");
+                html += `<tr>
+                    <td>${data.fecha || ''}</td>
+                    <td>${data.sucursal || ''}</td>
+                    <td>${data.encargado || ''}</td>
+                    <td>${data.venta || ''}</td>
+                    <td>${productos}</td>
+                </tr>`;
+            });
+
+            html += "</tbody></table>";
+            contenedor.innerHTML = html;
+        })
+        .catch(error => {
+            contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+            console.error("Error al cargar inventarios:", error);
+        });
+    }
+    </script>
+</body>
 </html>
