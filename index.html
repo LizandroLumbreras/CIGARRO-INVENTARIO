@@ -242,6 +242,7 @@
     <div class="print-button">
       <button onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
       <button onclick="limpiarFormulario()">🧹 Limpiar formulario</button>
+      <button onclick="guardarInventario()">💾 Guardar en Firebase</button>
     </div>
 
         <table>
@@ -281,17 +282,76 @@
     <tr><td>40</td><td>CHILE JAPONES</td><td><input type="text"></td><td><input type="text"></td></tr>
             </tbody>
         </table>
-        <div class="firma-impresion">
-            <p>Firma del encargado</p>
-            <div style="border-top: 1px solid black; width: 300px; margin: auto;"></div>
-        </div>
-    </div>
 
-    <script>
-        function limpiarFormulario() {
-            document.querySelectorAll('.info input, .info select').forEach(input => input.value = '');
-            document.querySelectorAll('table tbody input').forEach(input => input.value = '');
+    <div class="firma-impresion">
+      <p>Firma del encargado</p>
+      <div style="border-top: 1px solid black; width: 300px; margin: auto;"></div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDGyFWdM66UmjhRgkDF8dV_BYPuD47Za_0",
+      authDomain: "cigarroprov25.firebaseapp.com",
+      projectId: "cigarroprov25",
+      storageBucket: "cigarroprov25.firebasestorage.app",
+      messagingSenderId: "787918491212",
+      appId: "1:787918491212:web:7bcf09d09212c954066ee9"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function limpiarFormulario() {
+      document.querySelectorAll('.info input, .info select').forEach(input => input.value = '');
+      document.querySelectorAll('table tbody input').forEach(input => input.value = '');
+    }
+
+    function guardarInventario() {
+      const sucursal = document.getElementById('sucursal').value;
+      const fecha = document.querySelector('.info input[type="date"]').value;
+      const encargado = document.querySelector('.info input[placeholder="Encargado"]').value;
+      const venta = document.querySelector('.info input[placeholder="Venta"]').value;
+
+      const productos = [];
+
+      document.querySelectorAll('table tbody tr').forEach(fila => {
+        const clave = fila.cells[0].innerText;
+        const descripcion = fila.cells[1].innerText;
+        const pieza = fila.cells[2].querySelector('input').value;
+        const paquete = fila.cells[3].querySelector('input').value;
+
+        if (pieza || paquete) {
+          productos.push({
+            clave,
+            descripcion,
+            pieza: pieza || "0",
+            paquete: paquete || "0"
+          });
         }
-    </script>
+      });
+
+      db.collection("inventario").add({
+        sucursal,
+        fecha,
+        encargado,
+        venta,
+        productos,
+        fechaRegistro: new Date()
+      })
+      .then(() => {
+        alert("✅ Inventario guardado correctamente en Firebase");
+        limpiarFormulario();
+      })
+      .catch(error => {
+        console.error("❌ Error al guardar:", error);
+        alert("Error al guardar el inventario.");
+      });
+    }
+  </script>
 </body>
 </html>
