@@ -182,6 +182,7 @@
 
         <div class="print-button">
             <button onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
+            <button onclick="limpiarFormulario()">🧹 Limpiar formulario</button>
         </div>
 
         <table>
@@ -224,6 +225,35 @@
 
             const url = `https://wa.me/?text=${mensaje}`;
             window.open(url, '_blank');
+            <script>
+function limpiarFormulario() {
+    // Limpiar los inputs del encabezado
+    document.querySelectorAll('.info input').forEach(input => input.value = '');
+
+    // Limpiar los inputs de la tabla
+    document.querySelectorAll('table tbody input').forEach(input => input.value = '');
+}
+
+function enviarWhatsApp() {
+    const sucursal = document.querySelector('input[placeholder="Sucursal"]').value;
+    const encargado = document.querySelector('input[placeholder="Encargado"]').value;
+    const fecha = document.querySelector('input[type="date"]').value;
+    const venta = document.querySelector('input[placeholder="Venta"]').value;
+
+    let mensaje = `Sucursal: ${sucursal}%0AEncargado: ${encargado}%0AFecha: ${fecha}%0AVenta: ${venta}%0A%0AInventario:%0A`;
+
+    const filas = document.querySelectorAll("tbody tr");
+    filas.forEach(fila => {
+        const desc = fila.cells[0].innerText.trim();
+        const pieza = fila.cells[1].querySelector("input").value.trim();
+        const paquete = fila.cells[2].querySelector("input").value.trim();
+        if (pieza || paquete) {
+            mensaje += `${desc} | ${pieza} | ${paquete}%0A`;
+        }
+    });
+
+    const url = `https://wa.me/?text=${mensaje}`;
+    window.open(url, '_blank');
         }
     </script>
 </body>
