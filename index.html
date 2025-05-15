@@ -53,13 +53,15 @@
             margin: 10px;
         }
 
-        .info input {
+        .info input,
+        .info select {
             border: none;
             border-bottom: 2px solid #ccc;
             padding: 6px;
             width: 180px;
             background: transparent;
             font-size: 14px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .print-button {
@@ -110,8 +112,11 @@
             font-weight: 500;
         }
 
+        td:nth-child(2) input {
+            width: 60px;
+        }
+
         td input {
-            width: 90%;
             padding: 5px;
             border: none;
             background: #f4f4f4;
@@ -144,7 +149,7 @@
                 display: none !important;
             }
 
-            input {
+            input, select {
                 border: none;
                 background: transparent;
             }
@@ -156,16 +161,7 @@
                 align-items: flex-start;
             }
 
-            .info input {
-                .info select {
-                    border: none;
-                    border-bottom: 2px solid #ccc;
-                    padding: 6px;
-                    width: 180px;
-                    background: transparent;
-                    font-size: 14px;
-                    font-family: 'Poppins', sans-serif;
-                }
+            .info input, .info select {
                 width: 100%;
             }
         }
@@ -181,7 +177,8 @@
 
         <div class="info">
             <div>
-                <strong>Sucursal:</strong><br><<select id="sucursal">
+                <strong>Sucursal:</strong><br>
+                <select id="sucursal">
                     <option value="">Selecciona una sucursal</option>
                     <option value="OSITO">OSITO</option>
                     <option value="CENTRAL">CENTRAL</option>
@@ -192,7 +189,7 @@
                     <option value="RIO VERDE">RIO VERDE</option>
                     <option value="B41">B41</option>
                 </select>
-                    <br><strong>Encargado:</strong><br><input type="text" placeholder="Encargado">
+                <br><strong>Encargado:</strong><br><input type="text" placeholder="Encargado">
             </div>
             <div>
                 <strong>Fecha:</strong><br><input type="date">
@@ -223,20 +220,6 @@
                 <tr><td>LINK BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
                 <tr><td>BENSON DORADO</td><td><input type="text"></td><td><input type="text"></td></tr>
                 <tr><td>BENSON MENTHOL</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>CELOFAN ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>CELOFAN AMARILLO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>CELOFAN BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>NUEZ ENTERA</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>NUEZ PEDAZO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO ROJO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO ROJO DURO</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO ROJO 100</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO BLANCO SUAVE</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO FUSION SANDIA</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>MARLBORO RUBY</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>LUKY STIKE</td><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td>LINK ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
-<!-- Puedes seguir agregando más filas aquí -->
             </tbody>
         </table>
     </div>
@@ -245,10 +228,7 @@
 
     <script>
         function limpiarFormulario() {
-            // Limpiar los inputs del encabezado
-            document.querySelectorAll('.info input').forEach(input => input.value = '');
-
-            // Limpiar los inputs de la tabla
+            document.querySelectorAll('.info input, .info select').forEach(input => input.value = '');
             document.querySelectorAll('table tbody input').forEach(input => input.value = '');
         }
 
