@@ -14,7 +14,38 @@
 </style>
 </head>
 <body>
+
+<div class="logo" style="text-align:center; margin-bottom:20px;">
+    <img src="logo.png" alt="Logo" height="120">
+</div>
+
 <h1>INVENTARIO CIGARROS</h1>
+
+<div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+    <label>Sucursal:
+        <select id="sucursal">
+            <option value="">--Selecciona--</option>
+            <option value="Central">Central</option>
+            <option value="Provileon">Provileon</option>
+            <option value="Osito">Osito</option>
+            <option value="Rio Verde">Rio Verde</option>
+        </select>
+    </label>
+    <label>Encargado:
+        <select id="encargado">
+            <option value="">--Selecciona--</option>
+            <option value="Genaro">Genaro</option>
+            <option value="Sra Juany">Sra Juany</option>
+            <option value="Angel">Angel</option>
+            <option value="Adrian">Adrian</option>
+            <option value="Sergio">Sergio</option>
+        </select>
+    </label>
+    <label>Fecha:
+        <input id="fecha" type="date"/>
+    </label>
+</div>
+
 <table>
     <thead>
         <tr>
@@ -69,5 +100,210 @@
 <tr><td><input value="230001"/></td><td><input value="NUEZ GRANILLO"/></td><td><input/></td><td><input/></td></tr>
     </tbody>
 </table>
+
+<h2 style="text-align:center; margin-top:40px;">📋 Inventarios Guardados</h2>
+<div style="text-align:center; margin:20px 0;">
+    <label for="filtroSucursal"><strong>Filtrar por sucursal:</strong></label>
+    <select id="filtroSucursal" onchange="filtrarInventarios()">
+        <option value="">-- Todas --</option>
+        <option value="Central">Central</option>
+        <option value="Provileon">Provileon</option>
+        <option value="Osito">Osito</option>
+        <option value="Rio Verde">Rio Verde</option>
+    </select>
+</div>
+<div id="listaInventarios" style="margin-top:20px;"></div>
+
+
+<div style="text-align: center; margin: 30px 0;">
+    <button onclick="guardarInventario()" style="padding:10px 20px; background-color: #28a745; color:white; border:none; border-radius:5px; font-size:16px;">💾 Guardar en Firebase</button>
+</div>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
+function filtrarInventarios() {
+    const contenedor = document.getElementById("listaInventarios");
+    const filtro = document.getElementById("filtroSucursal").value;
+    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+
+    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+    if (filtro) {
+        consulta = consulta.where("sucursal", "==", filtro);
+    }
+
+    consulta.get().then(snapshot => {
+        if (snapshot.empty) {
+            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
+            return;
+        }
+
+        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const productos = data.productos.map(p => 
+                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
+            ).join("<br>");
+            html += `<tr>
+                <td>${data.fecha || ''}</td>
+                <td>${data.sucursal || ''}</td>
+                <td>${data.encargado || ''}</td>
+                <td>${productos}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        contenedor.innerHTML = html;
+    }).catch(error => {
+        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+        console.error("Error al cargar inventarios:", error);
+    });
+}
+window.onload = filtrarInventarios;
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js">
+function filtrarInventarios() {
+    const contenedor = document.getElementById("listaInventarios");
+    const filtro = document.getElementById("filtroSucursal").value;
+    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+
+    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+    if (filtro) {
+        consulta = consulta.where("sucursal", "==", filtro);
+    }
+
+    consulta.get().then(snapshot => {
+        if (snapshot.empty) {
+            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
+            return;
+        }
+
+        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const productos = data.productos.map(p => 
+                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
+            ).join("<br>");
+            html += `<tr>
+                <td>${data.fecha || ''}</td>
+                <td>${data.sucursal || ''}</td>
+                <td>${data.encargado || ''}</td>
+                <td>${productos}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        contenedor.innerHTML = html;
+    }).catch(error => {
+        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+        console.error("Error al cargar inventarios:", error);
+    });
+}
+window.onload = filtrarInventarios;
+
+</script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAw7Tq0DNtYx-8KpgbUfoWhVwfIQZzQyb0",
+    authDomain: "inventario-cigarro.firebaseapp.com",
+    projectId: "inventario-cigarro",
+    storageBucket: "inventario-cigarro.appspot.com",
+    messagingSenderId: "597989591223",
+    appId: "1:597989591223:web:f29bf1f082af7d696ea532"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function guardarInventario() {
+    
+    const sucursal = document.getElementById("sucursal").value;
+    const encargado = document.getElementById("encargado").value;
+    const fecha = document.getElementById("fecha").value;
+
+    if (!sucursal || !encargado || !fecha) {
+      alert("❗ Por favor, completa los campos de Sucursal, Encargado y Fecha.");
+      return;
+    }
+
+    const filas = document.querySelectorAll("tbody tr");
+    const productos = [];
+
+    filas.forEach(fila => {
+      const codigo = fila.cells[0].querySelector("input").value.trim();
+      const nombre = fila.cells[1].querySelector("input").value.trim();
+      const piezas = fila.cells[2].querySelector("input").value.trim();
+      const paquete = fila.cells[3].querySelector("input").value.trim();
+
+      if (codigo && nombre && (piezas || paquete)) {
+        productos.push({ codigo, descripcion: nombre, pieza: piezas, paquete });
+      }
+    });
+
+    if (productos.length === 0) {
+      alert("⚠️ No hay productos válidos para guardar.");
+      return;
+    }
+
+    db.collection("inventarios").add({
+      sucursal,
+      encargado,
+      fecha,
+      fecha: new Date().toISOString().split("T")[0],
+      productos,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("✅ Inventario guardado correctamente.");
+    }).catch(err => {
+      console.error("Error al guardar:", err);
+      alert("❌ Error al guardar el inventario.");
+    });
+  }
+
+function filtrarInventarios() {
+    const contenedor = document.getElementById("listaInventarios");
+    const filtro = document.getElementById("filtroSucursal").value;
+    contenedor.innerHTML = "<em>Cargando inventarios...</em>";
+
+    let consulta = db.collection("inventarios").orderBy("timestamp", "desc");
+    if (filtro) {
+        consulta = consulta.where("sucursal", "==", filtro);
+    }
+
+    consulta.get().then(snapshot => {
+        if (snapshot.empty) {
+            contenedor.innerHTML = "<p>No hay inventarios guardados.</p>";
+            return;
+        }
+
+        let html = '<table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+        html += '<thead><tr><th>Fecha</th><th>Sucursal</th><th>Encargado</th><th>Productos</th></tr></thead><tbody>';
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const productos = data.productos.map(p => 
+                `${p.codigo} - ${p.descripcion}: ${p.pieza} / ${p.paquete}`
+            ).join("<br>");
+            html += `<tr>
+                <td>${data.fecha || ''}</td>
+                <td>${data.sucursal || ''}</td>
+                <td>${data.encargado || ''}</td>
+                <td>${productos}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        contenedor.innerHTML = html;
+    }).catch(error => {
+        contenedor.innerHTML = "<p>Error al cargar inventarios.</p>";
+        console.error("Error al cargar inventarios:", error);
+    });
+}
+window.onload = filtrarInventarios;
+
+</script>
+
 </body>
 </html>
