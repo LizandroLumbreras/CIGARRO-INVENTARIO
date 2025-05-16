@@ -196,8 +196,7 @@
         margin: 5mm;
       }
     }
-  </style>
-</head>
+ </head>
 <body>
   <div class="container">
     <div class="logo">
@@ -207,38 +206,31 @@
     <h1>INVENTARIO CIGARRO</h1>
 
     <div class="info">
-      <div><strong>Sucursal:</strong><br>
-        <select id="sucursal">
-          <option value="">Selecciona una sucursal</option>
-          <option value="OSITO">OSITO</option>
-          <option value="CENTRAL">CENTRAL</option>
-          <option value="PROVILEON">PROVILEON</option>
-          <option value="MONTEMORELOS">MONTEMORELOS</option>
-          <option value="ALLENDE">ALLENDE</option>
-          <option value="MATRIZ">MATRIZ</option>
-          <option value="RIO VERDE">RIO VERDE</option>
-          <option value="B41">B41</option>
-        </select>
-      </div>
-      <div><strong>Fecha:</strong><br>
-        <input type="date">
-      </div>
-      <div><strong>Encargado:</strong><br>
-        <input type="text" placeholder="Encargado">
-      </div>
-      <div><strong>Venta:</strong><br>
-        <input type="text" placeholder="Venta">
-      </div>
+      <div><strong>Sucursal:</strong><br><input type="text" id="viewSucursal" readonly></div>
+      <div><strong>Fecha:</strong><br><input type="text" id="viewFecha" readonly></div>
+      <div><strong>Encargado:</strong><br><input type="text" id="viewEncargado" readonly></div>
+      <div><strong>Venta:</strong><br><input type="text" id="viewVenta" readonly></div>
     </div>
 
     <div class="print-button">
+      <select id="filtroSucursal">
+        <option value="">-- Filtrar por sucursal --</option>
+        <option value="OSITO">OSITO</option>
+        <option value="CENTRAL">CENTRAL</option>
+        <option value="PROVILEON">PROVILEON</option>
+        <option value="MONTEMORELOS">MONTEMORELOS</option>
+        <option value="ALLENDE">ALLENDE</option>
+        <option value="MATRIZ">MATRIZ</option>
+        <option value="RIO VERDE">RIO VERDE</option>
+        <option value="B41">B41</option>
+      </select>
+      <input type="date" id="filtroFecha">
+      <button onclick="filtrarYMostrarInventario()">🔍 Buscar Inventario</button>
       <button onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
       <button onclick="limpiarFormulario()">🧹 Limpiar formulario</button>
       <button onclick="guardarInventario()">💾 Guardar en Firebase</button>
-      <button onclick="mostrarInventario()">📋 Ver inventario guardado</button>
     </div>
-
-        <table>
+    <table>
             <thead>
                 <tr>
                     <th>CLAVE</th>
