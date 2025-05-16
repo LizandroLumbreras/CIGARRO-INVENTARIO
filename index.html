@@ -271,8 +271,7 @@
     <tr><td>7502252631313</td><td>GARAÑON ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
     <tr><td>7503040150023</td><td>GARAÑON BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
             </tbody>
-   
-  </table>
+        </table>
 
      <div class="firma-impresion">
       <p>Firma del encargado</p>
@@ -348,12 +347,12 @@
             tbody.innerHTML = '';
             data.productos.forEach(prod => {
               const fila = document.createElement('tr');
-              fila.innerHTML = `
+              fila.innerHTML = 
                 <td>${prod.clave}</td>
                 <td>${prod.descripcion}</td>
                 <td>${prod.pieza}</td>
                 <td>${prod.paquete}</td>
-              `;
+              ;
               tbody.appendChild(fila);
             });
           } else {
@@ -368,4 +367,3 @@
   </script>
 </body>
 </html>
-
