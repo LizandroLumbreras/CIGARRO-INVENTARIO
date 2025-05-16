@@ -111,11 +111,7 @@
       text-align: center;
     }
 
-    td:nth-child(1), th:nth-child(1) {
-      text-align: left;
-    }
-
-    td:nth-child(2) {
+    td:nth-child(1), th:nth-child(1), td:nth-child(2) {
       text-align: left;
     }
 
@@ -211,8 +207,7 @@
     <h1>INVENTARIO CIGARRO</h1>
 
     <div class="info">
-      <div>
-        <strong>Sucursal:</strong><br>
+      <div><strong>Sucursal:</strong><br>
         <select id="sucursal">
           <option value="">Selecciona una sucursal</option>
           <option value="OSITO">OSITO</option>
@@ -225,16 +220,13 @@
           <option value="B41">B41</option>
         </select>
       </div>
-      <div>
-        <strong>Fecha:</strong><br>
+      <div><strong>Fecha:</strong><br>
         <input type="date">
       </div>
-      <div>
-        <strong>Encargado:</strong><br>
+      <div><strong>Encargado:</strong><br>
         <input type="text" placeholder="Encargado">
       </div>
-      <div>
-        <strong>Venta:</strong><br>
+      <div><strong>Venta:</strong><br>
         <input type="text" placeholder="Venta">
       </div>
     </div>
@@ -243,6 +235,7 @@
       <button onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
       <button onclick="limpiarFormulario()">🧹 Limpiar formulario</button>
       <button onclick="guardarInventario()">💾 Guardar en Firebase</button>
+      <button onclick="mostrarInventario()">📋 Ver inventario guardado</button>
     </div>
 
         <table>
@@ -280,6 +273,11 @@
     <tr><td>1250</td><td>NUEZ ENTERA</td><td><input type="text"></td><td><input type="text"></td></tr>
     <tr><td>230001</td><td>NUEZ GRANILLO</td><td><input type="text"></td><td><input type="text"></td></tr>
     <tr><td>40</td><td>CHILE JAPONES</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td>40</td><td>MARLBORO ICE XPRESS</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td>40</td><td>BENSON MENTHOL LIGTH</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td>40</td><td>PALL MALL XL ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td>40</td><td>GARAÑON ROJO</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td>40</td><td>GARAÑON BLANCO</td><td><input type="text"></td><td><input type="text"></td></tr>
             </tbody>
         </table>
 
@@ -287,12 +285,12 @@
       <p>Firma del encargado</p>
       <div style="border-top: 1px solid black; width: 300px; margin: auto;"></div>
     </div>
+
+    <div id="reporteInventario" style="margin-top: 20px;"></div>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDGyFWdM66UmjhRgkDF8dV_BYPuD47Za_0",
@@ -302,9 +300,7 @@
       messagingSenderId: "787918491212",
       appId: "1:787918491212:web:7bcf09d09212c954066ee9"
     };
-
     firebase.initializeApp(firebaseConfig);
-    console.log("🔥 Firebase inicializado correctamente");
     const db = firebase.firestore();
 
     function limpiarFormulario() {
@@ -319,30 +315,18 @@
       const venta = document.querySelector('.info input[placeholder="Venta"]').value;
 
       const productos = [];
-
       document.querySelectorAll('table tbody tr').forEach(fila => {
         const clave = fila.cells[0].innerText;
         const descripcion = fila.cells[1].innerText;
         const pieza = fila.cells[2].querySelector('input').value;
         const paquete = fila.cells[3].querySelector('input').value;
-
         if (pieza || paquete) {
-          productos.push({
-            clave,
-            descripcion,
-            pieza: pieza || "0",
-            paquete: paquete || "0"
-          });
+          productos.push({ clave, descripcion, pieza: pieza || "0", paquete: paquete || "0" });
         }
       });
 
       db.collection("inventario").add({
-        sucursal,
-        fecha,
-        encargado,
-        venta,
-        productos,
-        fechaRegistro: new Date()
+        sucursal, fecha, encargado, venta, productos, fechaRegistro: new Date()
       })
       .then(() => {
         alert("✅ Inventario guardado correctamente en Firebase");
@@ -352,6 +336,43 @@
         console.error("❌ Error al guardar:", error);
         alert("Error al guardar el inventario.");
       });
+    }
+
+    function mostrarInventario() {
+      const contenedor = document.getElementById('reporteInventario');
+      contenedor.innerHTML = "<h3>📋 Reporte de Inventarios</h3>";
+
+      db.collection("inventario")
+        .orderBy("fechaRegistro", "desc")
+        .limit(5)
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+            contenedor.innerHTML += "<p>No hay inventarios registrados.</p>";
+            return;
+          }
+
+          querySnapshot.forEach(doc => {
+            const data = doc.data();
+            let html = `
+              <div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff;">
+                <strong>Sucursal:</strong> ${data.sucursal || '-'}<br>
+                <strong>Fecha:</strong> ${data.fecha || '-'}<br>
+                <strong>Encargado:</strong> ${data.encargado || '-'}<br>
+                <strong>Venta:</strong> ${data.venta || '-'}<br>
+                <strong>Productos:</strong><ul style="margin-top: 5px;">
+            `;
+            data.productos.forEach(prod => {
+              html += `<li>${prod.clave} - ${prod.descripcion}: ${prod.pieza} pzas / ${prod.paquete} pqt</li>`;
+            });
+            html += "</ul></div>";
+            contenedor.innerHTML += html;
+          });
+        })
+        .catch(error => {
+          console.error("Error al recuperar datos:", error);
+          contenedor.innerHTML = "<p style='color:red;'>Error al recuperar los datos.</p>";
+        });
     }
   </script>
 </body>
