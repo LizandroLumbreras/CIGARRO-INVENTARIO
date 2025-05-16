@@ -281,12 +281,10 @@
             </tbody>
         </table>
 
-    <div class="firma-impresion">
+     <div class="firma-impresion">
       <p>Firma del encargado</p>
       <div style="border-top: 1px solid black; width: 300px; margin: auto;"></div>
     </div>
-
-    <div id="reporteInventario" style="margin-top: 20px;"></div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -304,76 +302,77 @@
     const db = firebase.firestore();
 
     function limpiarFormulario() {
-      document.querySelectorAll('.info input, .info select').forEach(input => input.value = '');
-      document.querySelectorAll('table tbody input').forEach(input => input.value = '');
+      document.querySelectorAll('.info input').forEach(input => input.value = '');
+      document.querySelector('#tablaProductos tbody').innerHTML = '';
     }
 
     function guardarInventario() {
-      const sucursal = document.getElementById('sucursal').value;
-      const fecha = document.querySelector('.info input[type="date"]').value;
-      const encargado = document.querySelector('.info input[placeholder="Encargado"]').value;
-      const venta = document.querySelector('.info input[placeholder="Venta"]').value;
+      const sucursal = document.getElementById('viewSucursal').value;
+      const fecha = document.getElementById('viewFecha').value;
+      const encargado = document.getElementById('viewEncargado').value;
+      const venta = document.getElementById('viewVenta').value;
 
       const productos = [];
-      document.querySelectorAll('table tbody tr').forEach(fila => {
+      document.querySelectorAll('#tablaProductos tbody tr').forEach(fila => {
         const clave = fila.cells[0].innerText;
         const descripcion = fila.cells[1].innerText;
-        const pieza = fila.cells[2].querySelector('input').value;
-        const paquete = fila.cells[3].querySelector('input').value;
-        if (pieza || paquete) {
-          productos.push({ clave, descripcion, pieza: pieza || "0", paquete: paquete || "0" });
-        }
+        const pieza = fila.cells[2].innerText;
+        const paquete = fila.cells[3].innerText;
+        productos.push({ clave, descripcion, pieza, paquete });
       });
 
       db.collection("inventario").add({
         sucursal, fecha, encargado, venta, productos, fechaRegistro: new Date()
-      })
-      .then(() => {
+      }).then(() => {
         alert("✅ Inventario guardado correctamente en Firebase");
         limpiarFormulario();
-      })
-      .catch(error => {
+      }).catch(error => {
         console.error("❌ Error al guardar:", error);
         alert("Error al guardar el inventario.");
       });
     }
 
-    function mostrarInventario() {
-      const contenedor = document.getElementById('reporteInventario');
-      contenedor.innerHTML = "<h3>📋 Reporte de Inventarios</h3>";
+    function filtrarYMostrarInventario() {
+      const sucursal = document.getElementById('filtroSucursal').value;
+      const fecha = document.getElementById('filtroFecha').value;
+      let query = db.collection("inventario");
 
-      db.collection("inventario")
-        .orderBy("fechaRegistro", "desc")
-        .limit(5)
+      if (sucursal) query = query.where("sucursal", "==", sucursal);
+      if (fecha) query = query.where("fecha", "==", fecha);
+
+      query.orderBy("fechaRegistro", "desc")
+        .limit(1)
         .get()
-        .then(querySnapshot => {
-          if (querySnapshot.empty) {
-            contenedor.innerHTML += "<p>No hay inventarios registrados.</p>";
-            return;
-          }
+        .then(snapshot => {
+          if (!snapshot.empty) {
+            const data = snapshot.docs[0].data();
+            document.getElementById('viewSucursal').value = data.sucursal;
+            document.getElementById('viewFecha').value = data.fecha;
+            document.getElementById('viewEncargado').value = data.encargado;
+            document.getElementById('viewVenta').value = data.venta;
 
-          querySnapshot.forEach(doc => {
-            const data = doc.data();
-            let html = `
-              <div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff;">
-                <strong>Sucursal:</strong> ${data.sucursal || '-'}<br>
-                <strong>Fecha:</strong> ${data.fecha || '-'}<br>
-                <strong>Encargado:</strong> ${data.encargado || '-'}<br>
-                <strong>Venta:</strong> ${data.venta || '-'}<br>
-                <strong>Productos:</strong><ul style="margin-top: 5px;">
-            `;
+            const tbody = document.querySelector('#tablaProductos tbody');
+            tbody.innerHTML = '';
             data.productos.forEach(prod => {
-              html += `<li>${prod.clave} - ${prod.descripcion}: ${prod.pieza} pzas / ${prod.paquete} pqt</li>`;
+              const fila = document.createElement('tr');
+              fila.innerHTML = `
+                <td>${prod.clave}</td>
+                <td>${prod.descripcion}</td>
+                <td>${prod.pieza}</td>
+                <td>${prod.paquete}</td>
+              `;
+              tbody.appendChild(fila);
             });
-            html += "</ul></div>";
-            contenedor.innerHTML += html;
-          });
+          } else {
+            alert("No se encontró inventario con esos filtros.");
+          }
         })
         .catch(error => {
-          console.error("Error al recuperar datos:", error);
-          contenedor.innerHTML = "<p style='color:red;'>Error al recuperar los datos.</p>";
+          console.error("Error al filtrar inventarios:", error);
+          alert("Error al buscar inventario.");
         });
     }
   </script>
 </body>
 </html>
+
